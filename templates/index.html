@@ -11,10 +11,16 @@
             margin: 40px auto;
             padding: 0 20px;
         }
-        form {
+        .add-form {
             display: flex;
             gap: 8px;
             margin-bottom: 24px;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
         }
         input[type="text"] {
             flex: 1;
@@ -35,7 +41,7 @@
 <body>
     <h1>To-Do List</h1>
 
-    <form action="/add" method="POST">
+    <form class="add-form" action="/add" method="POST">
         <input type="text" name="title" placeholder="New task..." required>
         <button type="submit">Add</button>
     </form>
@@ -45,6 +51,11 @@
         {% for task in tasks %}
         <li class="{{ 'completed' if task.completed else '' }}">
             {{ task.title }}
+            {% if not task.completed %}
+            <form action="/done/{{ task.id }}" method="POST">
+                <button type="submit">Mark done</button>
+            </form>
+            {% endif %}
         </li>
         {% endfor %}
     </ul>

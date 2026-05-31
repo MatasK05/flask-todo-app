@@ -29,5 +29,21 @@ def add():
     return redirect(url_for("index"))
 
 
+@app.route("/done/<int:task_id>", methods=["POST"])
+def mark_done(task_id):
+    with open("tasks.json", "r") as file:
+        tasks = json.load(file)
+
+    for task in tasks:
+        if task["id"] == task_id:
+            task["completed"] = True
+            break
+
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file, indent=2)
+
+    return redirect(url_for("index"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
