@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .add-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 6px 10px;
+            font-size: 1rem;
+        }
+        button {
+            padding: 6px 14px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+
+    <p>{{ tasks | length }} tasks, {{ tasks | selectattr("completed") | list | length }} done</p>
+
+    <form class="add-form" action="/add" method="POST">
+        <input type="text" name="title" placeholder="New task..." required>
+        <button type="submit">Add</button>
+    </form>
+
+    {% if tasks %}
+    <ul>
+        {% for task in tasks %}
+        <li class="{{ 'completed' if task.completed else '' }}">
+            {{ task.title }}
+            {% if not task.completed %}
+            <form action="/done/{{ task.id }}" method="POST">
+                <button type="submit">Mark done</button>
+            </form>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No tasks yet.</p>
+    {% endif %}
+</body>
+</html>
