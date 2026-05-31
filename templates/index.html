@@ -41,6 +41,8 @@
 <body>
     <h1>To-Do List</h1>
 
+    <p>{{ tasks | length }} tasks, {{ tasks | selectattr("completed") | list | length }} done</p>
+
     <form class="add-form" action="/add" method="POST">
         <input type="text" name="title" placeholder="New task..." required>
         <button type="submit">Add</button>
